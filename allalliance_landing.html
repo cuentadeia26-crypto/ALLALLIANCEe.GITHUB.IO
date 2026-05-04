@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>AllAlliance — Vehículos Nuevos y Usados</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Segoe UI',Arial,sans-serif;color:#1a1a1a;background:#fff;}
+  a{text-decoration:none;color:inherit;}
+
+  /* NAV */
+  nav{position:fixed;top:0;width:100%;background:rgba(10,10,10,0.96);z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 5%;}
+  .logo{color:#fff;font-size:22px;font-weight:700;letter-spacing:2px;padding:18px 0;}
+  .logo span{color:#C9A84C;}
+  .nav-links{display:flex;gap:28px;}
+  .nav-links a{color:#ccc;font-size:13px;letter-spacing:1px;text-transform:uppercase;padding:22px 0;transition:color .2s;}
+  .nav-links a:hover{color:#C9A84C;}
+  .nav-cta{background:#C9A84C;color:#0a0a0a!important;padding:10px 22px!important;border-radius:3px;font-weight:600;font-size:12px!important;}
+
+  /* HERO */
+  .hero{height:100vh;background:linear-gradient(135deg,#0a0a0a 60%,#1a1a1a);display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden;}
+  .hero::before{content:'';position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1400&q=80') center/cover;opacity:0.18;}
+  .hero-content{position:relative;z-index:2;max-width:750px;padding:0 20px;}
+  .hero-badge{display:inline-block;border:1px solid #C9A84C;color:#C9A84C;font-size:11px;letter-spacing:3px;text-transform:uppercase;padding:6px 18px;border-radius:2px;margin-bottom:28px;}
+  .hero h1{font-size:clamp(36px,6vw,72px);font-weight:800;color:#fff;line-height:1.1;letter-spacing:-1px;margin-bottom:20px;}
+  .hero h1 span{color:#C9A84C;}
+  .hero p{font-size:17px;color:#aaa;line-height:1.7;margin-bottom:36px;max-width:540px;margin-left:auto;margin-right:auto;}
+  .btn-group{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+  .btn-primary{background:#C9A84C;color:#0a0a0a;padding:14px 34px;border-radius:3px;font-weight:700;font-size:14px;letter-spacing:1px;text-transform:uppercase;transition:background .2s;}
+  .btn-primary:hover{background:#b8953d;}
+  .btn-outline{border:1px solid #555;color:#ccc;padding:14px 34px;border-radius:3px;font-size:14px;letter-spacing:1px;text-transform:uppercase;transition:all .2s;}
+  .btn-outline:hover{border-color:#C9A84C;color:#C9A84C;}
+  .scroll-hint{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);color:#555;font-size:12px;letter-spacing:2px;text-transform:uppercase;}
+
+  /* STATS */
+  .stats{background:#0a0a0a;padding:48px 5%;display:flex;justify-content:center;gap:0;flex-wrap:wrap;}
+  .stat{text-align:center;padding:20px 40px;border-right:1px solid #222;}
+  .stat:last-child{border-right:none;}
+  .stat-num{font-size:38px;font-weight:800;color:#C9A84C;}
+  .stat-label{font-size:12px;color:#666;letter-spacing:2px;text-transform:uppercase;margin-top:4px;}
+
+  /* SECTIONS */
+  section{padding:90px 5%;}
+  .section-label{font-size:11px;color:#C9A84C;letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;}
+  .section-title{font-size:clamp(26px,4vw,42px);font-weight:800;color:#0a0a0a;line-height:1.2;margin-bottom:16px;}
+  .section-sub{font-size:16px;color:#666;line-height:1.7;max-width:560px;}
+  .section-center{text-align:center;}
+  .section-center .section-sub{margin:0 auto 48px;}
+
+  /* SOBRE NOSOTROS */
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;max-width:1100px;margin:0 auto;}
+  .about-img{background:#111;border-radius:4px;overflow:hidden;height:420px;position:relative;}
+  .about-img img{width:100%;height:100%;object-fit:cover;opacity:.85;}
+  .about-tag{position:absolute;bottom:24px;left:24px;background:#C9A84C;color:#0a0a0a;font-size:12px;font-weight:700;letter-spacing:1px;padding:8px 16px;border-radius:2px;}
+  .about-text{padding:20px 0;}
+  .about-text p{font-size:16px;color:#555;line-height:1.8;margin-bottom:20px;}
+  .about-features{display:flex;flex-direction:column;gap:14px;margin-top:28px;}
+  .af-item{display:flex;align-items:center;gap:12px;font-size:14px;color:#333;}
+  .af-dot{width:8px;height:8px;background:#C9A84C;border-radius:50%;flex-shrink:0;}
+
+  /* SERVICIOS */
+  .services{background:#f8f7f5;}
+  .services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;max-width:1100px;margin:48px auto 0;}
+  .service-card{background:#fff;border:1px solid #e8e5df;border-radius:4px;padding:32px 26px;transition:box-shadow .2s,transform .2s;}
+  .service-card:hover{box-shadow:0 8px 28px rgba(0,0,0,0.08);transform:translateY(-3px);}
+  .service-icon{width:48px;height:48px;background:#faf3e0;border-radius:3px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;font-size:22px;}
+  .service-card h3{font-size:17px;font-weight:700;color:#0a0a0a;margin-bottom:10px;}
+  .service-card p{font-size:14px;color:#777;line-height:1.7;}
+
+  /* CATÁLOGO */
+  .catalog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;max-width:1100px;margin:48px auto 0;}
+  .car-card{border:1px solid #e8e5df;border-radius:4px;overflow:hidden;transition:box-shadow .2s;}
+  .car-card:hover{box-shadow:0 8px 28px rgba(0,0,0,0.1);}
+  .car-img{height:200px;overflow:hidden;background:#111;}
+  .car-img img{width:100%;height:100%;object-fit:cover;transition:transform .3s;}
+  .car-card:hover .car-img img{transform:scale(1.05);}
+  .car-badge{display:inline-block;background:#0a0a0a;color:#C9A84C;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;border-radius:2px;margin:18px 18px 0;}
+  .car-info{padding:10px 18px 20px;}
+  .car-info h3{font-size:18px;font-weight:700;color:#0a0a0a;margin-bottom:6px;}
+  .car-info .year{font-size:13px;color:#999;margin-bottom:12px;}
+  .car-specs{display:flex;gap:14px;margin-bottom:16px;}
+  .car-spec{font-size:12px;color:#777;display:flex;align-items:center;gap:5px;}
+  .car-price{font-size:22px;font-weight:800;color:#C9A84C;}
+  .car-btn{display:block;text-align:center;background:#0a0a0a;color:#fff;padding:11px;font-size:13px;letter-spacing:1px;text-transform:uppercase;margin-top:14px;border-radius:2px;transition:background .2s;}
+  .car-btn:hover{background:#C9A84C;color:#0a0a0a;}
+
+  /* TESTIMONIOS */
+  .testimonials{background:#0a0a0a;}
+  .testimonials .section-title{color:#fff;}
+  .test-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;max-width:1100px;margin:48px auto 0;}
+  .test-card{background:#111;border:1px solid #222;border-radius:4px;padding:28px;}
+  .stars{color:#C9A84C;font-size:16px;margin-bottom:14px;letter-spacing:2px;}
+  .test-card p{font-size:15px;color:#aaa;line-height:1.8;margin-bottom:20px;font-style:italic;}
+  .test-author{display:flex;align-items:center;gap:12px;}
+  .test-avatar{width:40px;height:40px;border-radius:50%;background:#C9A84C;display:flex;align-items:center;justify-content:center;color:#0a0a0a;font-weight:700;font-size:15px;}
+  .test-name{font-size:14px;color:#fff;font-weight:600;}
+  .test-role{font-size:12px;color:#555;}
+
+  /* CONTACTO */
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;max-width:1100px;margin:48px auto 0;}
+  .contact-info h3{font-size:22px;font-weight:700;margin-bottom:20px;}
+  .contact-item{display:flex;gap:14px;margin-bottom:20px;align-items:flex-start;}
+  .contact-icon{width:40px;height:40px;background:#faf3e0;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+  .contact-item-text p:first-child{font-weight:600;font-size:14px;margin-bottom:3px;}
+  .contact-item-text p:last-child{font-size:14px;color:#777;}
+  .contact-form{background:#f8f7f5;border-radius:4px;padding:32px;}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+  .contact-form input,.contact-form textarea,.contact-form select{width:100%;padding:12px 14px;border:1px solid #ddd;border-radius:3px;font-size:14px;background:#fff;outline:none;transition:border .2s;font-family:inherit;}
+  .contact-form input:focus,.contact-form textarea:focus,.contact-form select:focus{border-color:#C9A84C;}
+  .contact-form textarea{resize:vertical;min-height:110px;margin-bottom:14px;}
+  .contact-form select{margin-bottom:14px;}
+  .form-submit{width:100%;background:#0a0a0a;color:#fff;border:none;padding:14px;font-size:14px;font-weight:600;letter-spacing:1px;text-transform:uppercase;border-radius:3px;cursor:pointer;transition:background .2s;}
+  .form-submit:hover{background:#C9A84C;color:#0a0a0a;}
+
+  /* FOOTER */
+  footer{background:#050505;padding:48px 5% 28px;}
+  .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;max-width:1100px;margin:0 auto 40px;}
+  .footer-brand .logo{display:block;margin-bottom:14px;}
+  .footer-brand p{font-size:13px;color:#555;line-height:1.8;}
+  .footer-col h4{font-size:12px;color:#fff;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;}
+  .footer-col a{display:block;font-size:13px;color:#555;margin-bottom:10px;transition:color .2s;}
+  .footer-col a:hover{color:#C9A84C;}
+  .footer-bottom{border-top:1px solid #111;padding-top:24px;max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+  .footer-bottom p{font-size:12px;color:#444;}
+
+  @media(max-width:768px){
+    .nav-links{display:none;}
+    .about-grid,.contact-grid{grid-template-columns:1fr;}
+    .stats{gap:0;}
+    .stat{padding:16px 20px;border-right:none;border-bottom:1px solid #222;}
+    .footer-grid{grid-template-columns:1fr 1fr;}
+    .form-row{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">ALL<span>ALLIANCE</span></div>
+  <div class="nav-links">
+    <a href="#about">Nosotros</a>
+    <a href="#services">Servicios</a>
+    <a href="#catalog">Catálogo</a>
+    <a href="#testimonials">Testimonios</a>
+    <a href="#contact" class="nav-cta">Contáctenos</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">Vehículos Nuevos &amp; Usados</div>
+    <h1>Tu próximo vehículo<br/>te espera en <span>AllAlliance</span></h1>
+    <p>Encuentra el vehículo ideal para ti con la mejor asesoría, precios competitivos y financiamiento a tu medida.</p>
+    <div class="btn-group">
+      <a href="#catalog" class="btn-primary">Ver Catálogo</a>
+      <a href="#contact" class="btn-outline">Solicitar Asesoría</a>
+    </div>
+  </div>
+  <div class="scroll-hint">&#x2193; Descubre más</div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat"><div class="stat-num">500+</div><div class="stat-label">Vehículos disponibles</div></div>
+  <div class="stat"><div class="stat-num">12+</div><div class="stat-label">Años de experiencia</div></div>
+  <div class="stat"><div class="stat-num">3,000+</div><div class="stat-label">Clientes satisfechos</div></div>
+  <div class="stat"><div class="stat-num">30+</div><div class="stat-label">Marcas representadas</div></div>
+</div>
+
+<!-- SOBRE NOSOTROS -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-img">
+      <img src="https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=700&q=80" alt="Showroom AllAlliance"/>
+      <div class="about-tag">Desde 2012</div>
+    </div>
+    <div class="about-text">
+      <div class="section-label">Sobre nosotros</div>
+      <h2 class="section-title">Más de una década conectando personas con sus vehículos ideales</h2>
+      <p>En AllAlliance somos especialistas en la comercialización de vehículos nuevos y usados. Nos distinguimos por ofrecer una atención personalizada, transparencia total en cada negociación y el respaldo de un equipo de profesionales con amplia experiencia en el sector automotriz.</p>
+      <p>Nuestro compromiso es que cada cliente encuentre el vehículo que se adapta a su estilo de vida y presupuesto, con la confianza de estar haciendo una inversión segura.</p>
+      <div class="about-features">
+        <div class="af-item"><div class="af-dot"></div>Revisión técnica certificada en cada vehículo</div>
+        <div class="af-item"><div class="af-dot"></div>Financiamiento flexible y tasas competitivas</div>
+        <div class="af-item"><div class="af-dot"></div>Garantía y servicio posventa</div>
+        <div class="af-item"><div class="af-dot"></div>Asesoría sin presión y totalmente gratuita</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICIOS -->
+<section id="services" class="services">
+  <div class="section-center">
+    <div class="section-label">Lo que ofrecemos</div>
+    <h2 class="section-title">Nuestros servicios</h2>
+    <p class="section-sub">Todo lo que necesitas para adquirir tu vehículo en un solo lugar, con la garantía y respaldo de AllAlliance.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon">🚗</div>
+      <h3>Vehículos Nuevos</h3>
+      <p>Accede a los últimos modelos de las marcas más reconocidas del mercado, con garantía de fábrica y precios oficiales.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🔍</div>
+      <h3>Vehículos Usados</h3>
+      <p>Amplio inventario de vehículos usados certificados, revisados y con historial verificado para tu tranquilidad.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">💳</div>
+      <h3>Financiamiento</h3>
+      <p>Planes de financiamiento personalizados con entidades bancarias aliadas. Cuotas accesibles y proceso ágil.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🔧</div>
+      <h3>Servicio Posventa</h3>
+      <p>Acompañamiento después de tu compra: mantenimiento, garantía extendida y soporte técnico especializado.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🔄</div>
+      <h3>Recibe tu Usado</h3>
+      <p>¿Quieres cambiar de vehículo? Recibimos tu carro usado como parte de pago con una valoración justa y transparente.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">📋</div>
+      <h3>Trámites y Papelería</h3>
+      <p>Nos encargamos de todos los trámites legales y de documentación para que tu compra sea rápida y sin complicaciones.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CATÁLOGO -->
+<section id="catalog">
+  <div class="section-center">
+    <div class="section-label">Inventario destacado</div>
+    <h2 class="section-title">Vehículos destacados</h2>
+    <p class="section-sub">Una selección de nuestros mejores vehículos disponibles hoy. Actualizado constantemente.</p>
+  </div>
+  <div class="catalog-grid">
+    <div class="car-card">
+      <div class="car-img"><img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&q=80" alt="BMW Serie 3"/></div>
+      <span class="car-badge">Nuevo</span>
+      <div class="car-info">
+        <h3>BMW Serie 3</h3>
+        <div class="year">2024 · Sedán</div>
+        <div class="car-specs">
+          <span class="car-spec">⚙ 2.0L Turbo</span>
+          <span class="car-spec">🔋 Automático</span>
+          <span class="car-spec">📍 0 km</span>
+        </div>
+        <div class="car-price">$85,900,000</div>
+        <a href="#contact" class="car-btn">Solicitar información</a>
+      </div>
+    </div>
+    <div class="car-card">
+      <div class="car-img"><img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=600&q=80" alt="Toyota RAV4"/></div>
+      <span class="car-badge">Nuevo</span>
+      <div class="car-info">
+        <h3>Toyota RAV4</h3>
+        <div class="year">2024 · SUV</div>
+        <div class="car-specs">
+          <span class="car-spec">⚙ 2.5L Híbrido</span>
+          <span class="car-spec">🔋 CVT</span>
+          <span class="car-spec">📍 0 km</span>
+        </div>
+        <div class="car-price">$112,500,000</div>
+        <a href="#contact" class="car-btn">Solicitar información</a>
+      </div>
+    </div>
+    <div class="car-card">
+      <div class="car-img"><img src="https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=600&q=80" alt="Mercedes-Benz GLC"/></div>
+      <span style="background:#C9A84C;color:#0a0a0a;" class="car-badge">Usado certificado</span>
+      <div class="car-info">
+        <h3>Mercedes-Benz GLC</h3>
+        <div class="year">2022 · SUV</div>
+        <div class="car-specs">
+          <span class="car-spec">⚙ 2.0L Turbo</span>
+          <span class="car-spec">🔋 9G-Tronic</span>
+          <span class="car-spec">📍 28,000 km</span>
+        </div>
+        <div class="car-price">$135,000,000</div>
+        <a href="#contact" class="car-btn">Solicitar información</a>
+      </div>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:36px;">
+    <a href="#contact" class="btn-primary" style="display:inline-block;background:#0a0a0a;color:#fff;padding:14px 36px;border-radius:3px;font-size:14px;font-weight:600;letter-spacing:1px;text-transform:uppercase;">Ver todo el inventario</a>
+  </div>
+</section>
+
+<!-- TESTIMONIOS -->
+<section id="testimonials" class="testimonials">
+  <div class="section-center">
+    <div class="section-label" style="color:#C9A84C;">Testimonios</div>
+    <h2 class="section-title">Lo que dicen nuestros clientes</h2>
+  </div>
+  <div class="test-grid">
+    <div class="test-card">
+      <div class="stars">★★★★★</div>
+      <p>"Excelente experiencia de principio a fin. El equipo de AllAlliance me asesoró sin presiones y encontré el vehículo perfecto para mi familia."</p>
+      <div class="test-author">
+        <div class="test-avatar">CR</div>
+        <div><div class="test-name">Carlos Rodríguez</div><div class="test-role">Cliente — Toyota RAV4 2024</div></div>
+      </div>
+    </div>
+    <div class="test-card">
+      <div class="stars">★★★★★</div>
+      <p>"Me ayudaron con el financiamiento y los trámites en tiempo récord. El vehículo llegó en perfectas condiciones. 100% recomendado."</p>
+      <div class="test-author">
+        <div class="test-avatar">ML</div>
+        <div><div class="test-name">María López</div><div class="test-role">Cliente — BMW Serie 3 2024</div></div>
+      </div>
+    </div>
+    <div class="test-card">
+      <div class="stars">★★★★★</div>
+      <p>"Compré un usado certificado y el proceso fue completamente transparente. Me mostraron el historial y la revisión técnica. Confío totalmente en AllAlliance."</p>
+      <div class="test-author">
+        <div class="test-avatar">JM</div>
+        <div><div class="test-name">Jorge Martínez</div><div class="test-role">Cliente — Mercedes GLC 2022</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contact">
+  <div class="section-center">
+    <div class="section-label">Contáctenos</div>
+    <h2 class="section-title">¿Listo para encontrar tu vehículo?</h2>
+    <p class="section-sub">Déjanos tus datos y un asesor te contactará en menos de 24 horas.</p>
+  </div>
+  <div class="contact-grid">
+    <div class="contact-info">
+      <h3>Información de contacto</h3>
+      <div class="contact-item">
+        <div class="contact-icon">📍</div>
+        <div class="contact-item-text"><p>Dirección</p><p>Av. Principal #123, Bogotá, Colombia</p></div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📞</div>
+        <div class="contact-item-text"><p>Teléfono</p><p>+57 (601) 000-0000</p></div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">✉️</div>
+        <div class="contact-item-text"><p>Email</p><p>info@allalliance.com</p></div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">🕐</div>
+        <div class="contact-item-text"><p>Horario de atención</p><p>Lun – Sáb: 8:00 am – 6:00 pm</p></div>
+      </div>
+    </div>
+    <div class="contact-form">
+      <div class="form-row">
+        <input type="text" placeholder="Nombre"/>
+        <input type="text" placeholder="Apellido"/>
+      </div>
+      <div class="form-row">
+        <input type="email" placeholder="Correo electrónico"/>
+        <input type="tel" placeholder="Teléfono"/>
+      </div>
+      <select>
+        <option value="">¿Qué tipo de vehículo buscas?</option>
+        <option>Vehículo Nuevo</option>
+        <option>Vehículo Usado</option>
+        <option>Financiamiento</option>
+        <option>Recibir mi usado</option>
+        <option>Otro</option>
+      </select>
+      <textarea placeholder="Cuéntanos más sobre lo que buscas..."></textarea>
+      <button class="form-submit">Enviar Mensaje</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo">ALL<span>ALLIANCE</span></div>
+      <p>Tu concesionario de confianza. Vehículos nuevos y usados con el respaldo y la experiencia que mereces.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navegación</h4>
+      <a href="#about">Nosotros</a>
+      <a href="#services">Servicios</a>
+      <a href="#catalog">Catálogo</a>
+      <a href="#contact">Contacto</a>
+    </div>
+    <div class="footer-col">
+      <h4>Servicios</h4>
+      <a href="#services">Vehículos Nuevos</a>
+      <a href="#services">Vehículos Usados</a>
+      <a href="#services">Financiamiento</a>
+      <a href="#services">Posventa</a>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <a href="#">Política de privacidad</a>
+      <a href="#">Términos y condiciones</a>
+      <a href="#">Política de cookies</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 AllAlliance. Todos los derechos reservados.</p>
+    <p style="color:#333;">Bogotá, Colombia</p>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{
+    a.addEventListener('click',e=>{
+      e.preventDefault();
+      const t=document.querySelector(a.getAttribute('href'));
+      if(t) t.scrollIntoView({behavior:'smooth'});
+    });
+  });
+  document.querySelector('.form-submit').addEventListener('click',()=>{
+    alert('¡Mensaje enviado! Un asesor se pondrá en contacto contigo pronto.');
+  });
+</script>
+</body>
+</html>
